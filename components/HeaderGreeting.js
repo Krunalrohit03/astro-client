@@ -1,32 +1,54 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { UserContext } from '../context/UserContext';
 
-export default function HeaderGreeting() {
+export default function HeaderGreeting({ navigation }) {
+  const { user } = useContext(UserContext);
+
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }}
-        style={styles.avatar}
-      />
-      <Text style={styles.greeting}>Hi Krunal</Text>
+    <View style={styles.header}>
+      <TouchableOpacity
+        style={styles.profileButton}
+        onPress={() => navigation.openDrawer()}
+      >
+        <Image
+          source={
+            user?.photo
+              ? { uri: user.photo }
+              : require('../assets/logo.png')
+          }
+          style={styles.profileImage}
+        />
+        <Text style={styles.profileName}>
+          Hi {user?.name || 'User'}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+    backgroundColor: '#fff',
+    elevation: 2,
+    marginBottom: 10,
   },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 12,
+  profileButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  greeting: {
-    fontSize: 20,
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover',
+  },
+  profileName: {
+    marginLeft: 10,
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });

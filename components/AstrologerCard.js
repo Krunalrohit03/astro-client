@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import RatingStars from './RatingStars';
+import AstrologerChatModal from './AstrologerChatModal';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 
-export default function AstrologerCard({ astrologer, onPress }) {
+
+export default function AstrologerCard({ astrologer, onPressChat, onWaitlist }) {
+  const { user } = useContext(UserContext);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  const handlePress = () => {
+    if (astrologer.isBusy) {
+      setModalVisible(true);
+      if (onWaitlist) onWaitlist(astrologer);
+    } else {
+      onPressChat(astrologer);
+    }
+  };
+
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <View style={styles.card}>
       <Image source={{ uri: astrologer.photo }} style={styles.avatar} />
 
       <View style={styles.info}>
@@ -25,10 +42,23 @@ export default function AstrologerCard({ astrologer, onPress }) {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.chatButton} onPress={onPress}>
-        <Text style={styles.chatButtonText}>Chat</Text>
+      <TouchableOpacity
+        style={astrologer.isBusy ? styles.waitlistButton : styles.chatButton}
+        onPress={handlePress}
+      >
+        <Text style={astrologer.isBusy ? styles.waitlistText : styles.chatButtonText}>
+          {astrologer.isBusy ? 'Waitlist' : 'Chat'}
+        </Text>
       </TouchableOpacity>
-    </TouchableOpacity>
+
+      <AstrologerChatModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        astrologer={astrologer}
+        user={user}
+      />
+
+    </View>
   );
 }
 
@@ -48,7 +78,7 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     borderWidth: 2,
-    borderColor: '#ffd700',
+    borderColor: '#FFD700',
     marginRight: 12,
   },
   info: { flex: 1 },
@@ -84,5 +114,17 @@ const styles = StyleSheet.create({
   chatButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  waitlistButton: {
+    backgroundColor: '#ccc',
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  waitlistText: {
+    color: '#555',
+    fontWeight: 'bold'
   },
 });

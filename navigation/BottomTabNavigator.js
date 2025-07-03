@@ -1,7 +1,8 @@
 import React from 'react';
+import { Text } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import ChatAstrologerScreen from '../screens/ChatAstrologerScreen';
 import CustomerSupportChatScreen from '../screens/CustomerSupportChatScreen';
@@ -11,54 +12,70 @@ import WalletScreen from '../screens/WalletScreen';
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
-    return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                headerShown: false,
-                tabBarIcon: ({ color, size }) => {
-                    let iconName;
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => {
+          let iconName = 'ellipse-outline';
 
-                    if (route.name === 'Home') {
-                        iconName = 'home';
-                    } else if (route.name === 'Chat') {
-                        iconName = 'chatbubbles';
-                    } else if (route.name === 'Support') {
-                        iconName = 'help-circle';
-                    } else if (route.name === 'Settings') {
-                        iconName = 'settings';
-                    }
+          if (route.name === 'Home') iconName = 'home-outline';
+          else if (route.name === 'Chat') iconName = 'chatbubbles-outline';
+          else if (route.name === 'Support') iconName = 'headset-outline';
+          else if (route.name === 'Wallet') iconName = 'wallet-outline';
+          else if (route.name === 'Settings') iconName = 'settings-outline';
 
-                    return <Ionicons name={iconName} size={size} color={color} />;
-                },
-                tabBarActiveTintColor: '#6a0dad',
-                tabBarInactiveTintColor: 'gray',
-            })}
-        >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Chat" component={ChatAstrologerScreen} />
-            <Tab.Screen name="Support" component={CustomerSupportChatScreen} />
-            {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
-            <Tab.Screen
-                name="Wallet"
-                component={WalletScreen}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="wallet" size={size} color={color} />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Settings"
-                component={SettingsScreen}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="settings" size={size} color={color} />
-                    ),
-                }}
-            />
-
-
-        </Tab.Navigator>
-
-    );
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#6a0dad',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: ({ color }) => (
+            <Text style={{ color, fontSize: 12 }}>Home</Text>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={ChatAstrologerScreen}
+        options={{
+          tabBarLabel: ({ color }) => (
+            <Text style={{ color, fontSize: 12 }}>Chat</Text>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Support"
+        component={CustomerSupportChatScreen}
+        options={{
+          tabBarLabel: ({ color }) => (
+            <Text style={{ color, fontSize: 12 }}>Support</Text>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Wallet"
+        component={WalletScreen}
+        options={{
+          tabBarLabel: ({ color }) => (
+            <Text style={{ color, fontSize: 12 }}>Wallet</Text>
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: ({ color }) => (
+            <Text style={{ color, fontSize: 12 }}>Settings</Text>
+          )
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
