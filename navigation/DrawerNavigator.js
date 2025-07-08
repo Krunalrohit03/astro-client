@@ -89,7 +89,7 @@ export default function DrawerNavigator() {
     return (
         <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerContent {...props} />}
-            screenOptions={{ headerShown: true }}
+            screenOptions={{ headerShown: false }}
         >
             <Drawer.Screen name="HomeTabs" component={BottomTabNavigator} />
             <Drawer.Screen name="BookPooja" component={PlaceholderScreen} />

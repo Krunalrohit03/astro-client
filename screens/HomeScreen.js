@@ -87,7 +87,7 @@ export default function HomeScreen({ navigation }) {
           <>
             <HeaderGreeting navigation={navigation} />
             <WalletBanner />
-            <ShortcutIcons />
+            <ShortcutIcons navigation={navigation}/>
             <PromoBanner />
           </>
         }
